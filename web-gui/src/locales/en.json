@@ -1,0 +1,57 @@
+{
+    "header": {
+        "title": "Osu! AI Studio"
+    },
+    "settings": {
+        "tabs": {
+            "timing": "Timing",
+            "difficulty": "Difficulty",
+            "ai": "AI"
+        },
+        "timing": {
+            "bpm": "BPM (Tempo)",
+            "bpm_tip": "Beats per minute. Defines the rhythmic grid speed.",
+            "offset": "Offset (MS)",
+            "offset_tip": "The start time of the first beat in milliseconds. Synchronizes grid with audio.",
+            "auto_detect": "Auto-detect",
+            "tap_bpm": "Tap BPM",
+            "metronome": "Metronome"
+        },
+        "difficulty": {
+            "ar": "Approach Rate (AR)",
+            "ar_tip": "The speed at which hit objects appear. High AR gives less time to react.",
+            "cs": "Circle Size (CS)",
+            "cs_tip": "The size of hit objects. Higher values mean smaller circles.",
+            "od": "Overall Difficulty (OD)",
+            "od_tip": "Determines how precise you must be to get a 300. Higher values are stricter.",
+            "hp": "HP Drain Rate (HP)",
+            "hp_tip": "How fast health depletes and how hard it is to recover."
+        },
+        "ai": {
+            "threshold": "Threshold",
+            "threshold_tooltip": "Lower value means more notes.",
+            "grid_snap": "Grid Snap",
+            "grid_snap_tooltip": "Aligns notes to the rhythmic grid. 1/4 is standard for most maps.",
+            "style": "Pattern Style",
+            "style_tooltip": "Defines the visual flow: Jumps (distance), Streams (speed), or Balanced.",
+            "styles": {
+                "balanced": "Balanced",
+                "jumps": "Jumps",
+                "streams": "Streams"
+            },
+            "range": {
+                "title": "Generation Range",
+                "tooltip": "Enable to limit generation to a specific time interval.",
+                "start": "Start",
+                "end": "End",
+                "unit_ms": "ms",
+                "unit_sec": "sec"
+            }
+        },
+        "generate_btn": "Generate Pattern"
+    },
+    "toolbar": {
+        "create": "Create project",
+        "export": "Export map"
+    }
+}

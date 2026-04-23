@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+    --color-studio: hsl(240 10% 4%);
+    --color-sidebar: hsl(240 10% 7%);
+    --color-panel: hsl(240 10% 10%);
+    --color-accent: hsl(333 71% 50%);
+    --color-accent-foreground: hsl(0 0% 100%);
+    --color-border: hsl(240 6% 15%);
+    --color-foreground: hsl(0 0% 98%);
+    --color-foreground-muted: hsl(240 5% 65%);
+}
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}

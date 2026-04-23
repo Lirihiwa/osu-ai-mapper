@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  osu-mapper-backend:
+    build:
+      context: ./analyzer
+    container_name: osu_ai_mapper_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./analyzer:/app
+      - ./analyzer/output:/app/output
+      - ./analyzer/temp:/app/temp
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  osu-mapper-frontend:
+    build:
+      context: ./web-gui
+    container_name: osu_ai_mapper_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web-gui:/app
+      - /app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - osu-mapper-backend

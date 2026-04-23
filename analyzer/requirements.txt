@@ -1,0 +1,9 @@
+fastapi
+python-multipart
+uvicorn
+numpy==1.23.5
+scipy
+Cython
+madmom
+librosa
+pydantic

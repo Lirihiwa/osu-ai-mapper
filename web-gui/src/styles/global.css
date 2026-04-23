@@ -1,0 +1,19 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --studio-bg: 240 10% 4%;
+        --sidebar-bg: 240 10% 7%;
+        --panel-bg: 240 10% 10%;
+
+        --foreground: 0 0% 98%;
+        --foreground-muted: 240 5% 65%;
+
+        --accent: 333 71% 50%;
+        --accent-foreground: 0 0% 100%;
+
+        --border: 240 6% 15%;
+        --input: 240 6% 10%;
+    }
+}
