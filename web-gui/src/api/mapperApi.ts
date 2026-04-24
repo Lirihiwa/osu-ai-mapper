@@ -47,6 +47,7 @@ export const mapperApi = {
     },
 
     generateObjects: async (params: {
+        file_id: string;
         onsets: number[];
         bpm: number;
         offset: number;

@@ -13,7 +13,7 @@ export const SettingsPanel = () => {
     const [isGenerating, setIsGenerating] = useState(false);
 
     const {
-        activeTab,
+        fileId, activeTab,
         onsets, bpm, offset, gridSize,
         isRangeEnabled, startTime, endTime, timeUnit,
         setHitObjects
@@ -32,6 +32,7 @@ export const SettingsPanel = () => {
             };
 
             const payload: any = {
+                file_id: fileId,
                 onsets: onsets,
                 bpm: parseFloat(bpm) || 120,
                 offset: Math.round(parseFloat(offset) || 0), // В целое число

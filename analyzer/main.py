@@ -1,3 +1,4 @@
+from analyzer.services import intensity
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -26,6 +27,7 @@ class HitObjectSchema(BaseModel):
     new_combo: bool = False
 
 class GenerateRequestSchema(BaseModel):
+    file_id: str
     onsets: List[float]
     bpm: float
     offset: int
@@ -86,8 +88,11 @@ async def get_recommended_offset(onsets: List[float]):
 
 @app.post("/api/generate/objects")
 async def generate_objects(req: GenerateRequestSchema):
+    path = audio.get_path_by_id(req.file_id)
+    intensity_profile = intensity.get_intensity_profile(path)
+
     objects = generator.generate_hit_objects(
-        req.onsets, req.bpm, req.offset, req.grid_size, req.start_time, req.end_time
+        req.onsets, req.bpm, req.offset, req.grid_size, req.start_time, req.end_time, intensity_profile
     )
     return {"hit_objects": objects}
 
