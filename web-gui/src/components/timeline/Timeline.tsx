@@ -1,7 +1,8 @@
-import React, { useRef, useEffect, memo } from 'react';
+import React, { useRef, memo } from 'react';
 import { useSettingsStore } from '../../store/useSettingsStore';
 import { PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { shallow } from "zustand/vanilla/shallow";
+import {useTimelineSync} from "../../hooks/useTimelineSync.ts";
+import {formatTime} from "../../utils/time.ts";
 
 const RhythmMarkers = memo(({ onsets, duration }: { onsets: number[] | null, duration: number }) => {
     if (!onsets || duration === 0) return null;
@@ -26,42 +27,11 @@ export const Timeline = () => {
     const { onsets, duration, isPlaying, setIsPlaying, setCurrentTime } = useSettingsStore();
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const playheadRef = useRef<HTMLDivElement>(null);
+
+    const playHeadRef = useRef<HTMLDivElement>(null);
     const timeTextRef = useRef<HTMLSpanElement>(null);
 
-    const formatTime = (ms: number) => {
-        const seconds = Math.floor(ms / 1000);
-        const remainingMs = Math.floor(ms % 1000);
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${remainingMs.toString().padStart(3, '0')}`;
-    };
-
-    useEffect(() => {
-        const unsubscribe = useSettingsStore.subscribe(
-            (state) => ({
-                currentTime: state.currentTime,
-                duration: state.duration
-            }),
-            (val) => {
-                if (val.duration === 0) return;
-
-                if (playheadRef.current) {
-                    const pos = (val.currentTime / val.duration) * 100;
-                    playheadRef.current.style.left = `${pos}%`;
-                }
-
-                if (timeTextRef.current) {
-                    timeTextRef.current.innerText = formatTime(val.currentTime);
-                }
-            },
-            {
-                equalityFn: shallow,
-                fireImmediately: true
-            }
-        );
-        return () => unsubscribe();
-    }, []);
+    useTimelineSync(playHeadRef, timeTextRef);
 
     const handleTimelineClick = (e: React.MouseEvent) => {
         if (!containerRef.current || duration === 0) return;
@@ -102,7 +72,7 @@ export const Timeline = () => {
                     <RhythmMarkers onsets={onsets} duration={duration} />
 
                     <div
-                        ref={playheadRef}
+                        ref={playHeadRef}
                         className="absolute top-0 bottom-0 z-20 shadow-[0_0_10px_rgba(255,0,102,0.8)] pointer-events-none"
                         style={{
                             left: '0%',
