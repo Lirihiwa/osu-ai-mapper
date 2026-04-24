@@ -39,17 +39,15 @@ export const TimingTab = () => {
         try {
             let currentOnsets = onsets;
 
-            // 1. Если в памяти нет ритмов (или изменился файл/порог), запрашиваем AI
             if (!currentOnsets) {
                 console.log("Onsets cache empty. Running AI analysis...");
                 const rhythmData = await mapperApi.analyzeOnsets(fileId, threshold);
                 currentOnsets = rhythmData.onsets;
-                setOnsets(currentOnsets); // Сохраняем в кэш!
+                setOnsets(currentOnsets);
             } else {
                 console.log("Using cached onsets data");
             }
 
-            // 2. Вычисляем офсет (этот запрос быстрый)
             const offsetData = await mapperApi.analyzeOffset(currentOnsets);
             setOffset(offsetData.offset.toString());
 
@@ -63,7 +61,6 @@ export const TimingTab = () => {
     return (
         <div className="flex flex-col gap-10">
 
-            {/* BPM Section */}
             <div className="flex flex-col gap-4">
                 <SectionTitle label={t('settings.timing.bpm')} tooltipId="bpm-tip" tooltipContent={t('settings.timing.bpm_tip')} />
                 <div className="flex gap-2">
@@ -82,7 +79,6 @@ export const TimingTab = () => {
                 </div>
             </div>
 
-            {/* Offset Section */}
             <div className="flex flex-col gap-4">
                 <SectionTitle label={t('settings.timing.offset')} tooltipId="offset-tip" tooltipContent={t('settings.timing.offset_tip')} />
                 <div className="flex gap-2">
@@ -101,7 +97,6 @@ export const TimingTab = () => {
                 </div>
             </div>
 
-            {/* 3. Metronome Toggle (Квадратный дизайн) */}
             <div className="pt-6 border-t border-border">
                 <div
                     className="flex items-center justify-between cursor-pointer group"
@@ -114,14 +109,12 @@ export const TimingTab = () => {
                         </span>
                     </div>
 
-                    {/* Квадратный свитч */}
                     <div className={`w-10 h-5 flex items-center p-1 transition-colors ${isMetronomeEnabled ? 'bg-accent' : 'bg-studio border border-border'}`}>
                         <div className={`w-3 h-3 transition-transform ${isMetronomeEnabled ? 'translate-x-5 bg-white' : 'translate-x-0 bg-foreground-muted'}`} />
                     </div>
                 </div>
             </div>
 
-            {/* Tooltips */}
             <Tooltip id="bpm-tip" place="left" className="z-50 !bg-studio !border !border-border !text-foreground-muted !rounded-none !px-3 !py-2 !text-xs !max-w-[200px]" />
             <Tooltip id="offset-tip" place="left" className="z-50 !bg-studio !border !border-border !text-foreground-muted !rounded-none !px-3 !py-2 !text-xs !max-w-[200px]" />
         </div>

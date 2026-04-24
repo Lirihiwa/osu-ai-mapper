@@ -1,12 +1,10 @@
 const BASE_URL = 'http://localhost:8000';
 
 export const mapperApi = {
-    // Хелпер для обработки ошибок
     handleResponse: async (response: Response) => {
         if (!response.ok) {
-            // Пытаемся прочитать детали ошибки от сервера
             const errorData = await response.json().catch(() => ({}));
-            console.error('API Error details:', errorData); // <-- Это покажет, что не так
+            console.error('API Error details:', errorData);
             throw new Error(errorData.detail?.[0]?.msg || 'API Request failed');
         }
         return response.json();
@@ -62,5 +60,13 @@ export const mapperApi = {
         return mapperApi.handleResponse(response);
     },
 
+    packageToOSZ: async (params: any) => {
+        const response = await fetch(`${BASE_URL}/api/package`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(params),
+        });
+        return mapperApi.handleResponse(response);
+    },
 
 };

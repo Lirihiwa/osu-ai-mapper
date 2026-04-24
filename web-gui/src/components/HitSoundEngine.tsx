@@ -4,23 +4,25 @@ import { useSettingsStore } from '../store/useSettingsStore';
 export const HitSoundEngine = () => {
     const { hitObjects, currentTime, isPlaying } = useSettingsStore();
 
-    // Web Audio API ресурсы
     const audioCtxRef = useRef<AudioContext | null>(null);
     const hitBufferRef = useRef<AudioBuffer | null>(null);
     const lastPlayedIndexRef = useRef<number>(-1);
 
-    // 1. Загружаем hit.wav в память при старте
+    const lastTimeRef = useRef<number>(0);
+
     useEffect(() => {
         const initAudio = async () => {
-            audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const Context = window.AudioContext || (window as any).webkitAudioContext;
+            audioCtxRef.current = new Context({
+                latencyHint: 'interactive',
+            });
 
             try {
                 const response = await fetch('/hit.wav');
                 const arrayBuffer = await response.arrayBuffer();
                 hitBufferRef.current = await audioCtxRef.current.decodeAudioData(arrayBuffer);
-                console.log("Hitsound loaded successfully");
             } catch (err) {
-                console.error("Failed to load hitsound:", err);
+                console.error("Hitsound error:", err);
             }
         };
 
@@ -28,50 +30,56 @@ export const HitSoundEngine = () => {
         return () => { audioCtxRef.current?.close(); };
     }, []);
 
-    // 2. Функция воспроизведения
-    const playHit = () => {
-        if (!audioCtxRef.current || !hitBufferRef.current) return;
+    const playHit = async (timeDelay: number = 0) => {
+        const ctx = audioCtxRef.current;
+        if (!ctx || !hitBufferRef.current || ctx.state === 'closed') return;
+        if (ctx.state === 'suspended') await ctx.resume();
 
-        // Создаем источник звука (нужно создавать каждый раз новый)
-        const source = audioCtxRef.current.createBufferSource();
+        const source = ctx.createBufferSource();
         source.buffer = hitBufferRef.current;
-
-        // Узел громкости (чтобы не было слишком громко)
-        const gainNode = audioCtxRef.current.createGain();
-        gainNode.gain.value = 0.5; // Громкость 50%
-
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(1.5, ctx.currentTime);
         source.connect(gainNode);
-        gainNode.connect(audioCtxRef.current.destination);
-
-        source.start(0);
+        gainNode.connect(ctx.destination);
+        source.start(ctx.currentTime + timeDelay);
+        source.onended = () => {
+            source.disconnect();
+            gainNode.disconnect();
+        };
     };
 
-    // 3. Следим за временем и "кликаем" в нужный момент
     useEffect(() => {
-        if (!isPlaying || !hitObjects.length) {
-            // Если остановили музыку, сбрасываем индекс, чтобы при старте начать заново
-            if (!isPlaying) {
-                // Находим ближайший индекс к текущему времени, чтобы не играть старые звуки при перемотке
-                const index = hitObjects.findIndex(obj => obj.time >= currentTime);
-                lastPlayedIndexRef.current = index - 1;
-            }
-            return;
+        if (!hitObjects.length) return;
+
+        const timeDiff = Math.abs(currentTime - lastTimeRef.current);
+
+        if (timeDiff > 100) {
+            const newIndex = hitObjects.findIndex(obj => obj.time >= currentTime);
+            lastPlayedIndexRef.current = newIndex - 1;
+            console.log("Seek detected, syncing index...");
         }
 
-        // Проверяем объекты, начиная с последнего проигранного
+        lastTimeRef.current = currentTime;
+
+        if (!isPlaying) return;
+
+        const lookAhead = 16;
+
         for (let i = lastPlayedIndexRef.current + 1; i < hitObjects.length; i++) {
             const obj = hitObjects[i];
+            const timeUntilHit = obj.time - currentTime;
 
-            // Если время объекта настало (или мы его чуть-чуть проскочили из-за лага)
-            if (currentTime >= obj.time) {
-                playHit();
+            if (timeUntilHit <= lookAhead && timeUntilHit > -50) {
+                const delay = Math.max(0, timeUntilHit / 1000);
+                playHit(delay);
                 lastPlayedIndexRef.current = i;
-            } else {
-                // Поскольку объекты отсортированы, дальше можно не смотреть
+            } else if (timeUntilHit > lookAhead) {
                 break;
+            } else if (timeUntilHit <= -50) {
+                lastPlayedIndexRef.current = i;
             }
         }
     }, [currentTime, isPlaying, hitObjects]);
 
-    return null; // Компонент ничего не рендерит
+    return null;
 };
