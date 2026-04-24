@@ -3,3 +3,5 @@
 ./songs
 ./temp
 ./temp_uploads
+/__pycache__
+/services/__pycache__
