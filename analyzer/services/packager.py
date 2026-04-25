@@ -19,6 +19,7 @@ def generate_osu_text(data: dict, audio_filename: str) -> str:
         "[General]",
         f"AudioFilename: {audio_filename}",
         "AudioLeadIn: 0",
+        "StackLeniency: 0",
         "Mode: 0",
         "",
         "[Metadata]",

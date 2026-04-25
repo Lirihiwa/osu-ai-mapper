@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../../../store/useSettingsStore';
-import { SliderField } from '../../../ui/SliderField'; // Импортируем наш новый UI компонент
+import { SliderField } from '../../../ui/SliderField';
 
 export const DifficultyTab = () => {
     const { t } = useTranslation();

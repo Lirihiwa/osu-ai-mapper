@@ -1,0 +1,37 @@
+import type {StateCreator} from 'zustand';
+import type { FullStore } from '../useSettingsStore';
+
+export const createSettingsSlice: StateCreator<FullStore, [["zustand/subscribeWithSelector", never], ["zustand/persist", unknown]], [], any> = (set) => ({
+    activeTab: 'ai',
+    threshold: 0.3,
+    gridSize: 4,
+    style: 'balanced',
+    isRangeEnabled: false,
+    startTime: '0',
+    endTime: '1000',
+    timeUnit: 'ms',
+    ar: 9,
+    cs: 4,
+    od: 8,
+    hp: 5,
+    bpm: '120',
+    offset: '0',
+    isMetronomeEnabled: false,
+
+
+    setActiveTab: (activeTab) => set({ activeTab }),
+    setThreshold: (threshold) => set({ threshold, onsets: null }),
+    setGridSize: (gridSize) => set({ gridSize }),
+    setStyle: (style) => set({ style }),
+    setIsRangeEnabled: (isRangeEnabled) => set({ isRangeEnabled }),
+    setStartTime: (startTime) => set({ startTime }),
+    setEndTime: (endTime) => set({ endTime }),
+    setTimeUnit: (timeUnit) => set({ timeUnit }),
+    setAR: (ar) => set({ ar }),
+    setCS: (cs) => set({ cs }),
+    setOD: (od) => set({ od }),
+    setHP: (hp) => set({ hp }),
+    setBPM: (bpm) => set({ bpm }),
+    setOffset: (offset) => set({ offset }),
+    setIsMetronomeEnabled: (isMetronomeEnabled) => set({ isMetronomeEnabled }),
+});

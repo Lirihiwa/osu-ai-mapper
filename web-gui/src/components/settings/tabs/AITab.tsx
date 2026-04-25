@@ -3,7 +3,8 @@ import { Tooltip } from 'react-tooltip';
 import type { GridSize, MapperStyle, TimeUnit } from '../types';
 import { useSettingsStore } from "../../../store/useSettingsStore";
 import { SliderField } from '../../ui/SliderField';
-import { SectionTitle } from '../../ui/SectionTitle'; // Импортируем заголовок
+import { SectionTitle } from '../../ui/SectionTitle';
+import {NumberInput} from "../../ui/NumberInput.tsx";
 
 export const AITab = () => {
     const { t } = useTranslation();
@@ -21,7 +22,6 @@ export const AITab = () => {
 
     return (
         <div className="flex flex-col gap-10">
-            {/* 1. Threshold (Используем общий компонент слайдера) */}
             <SliderField
                 label={t('settings.ai.threshold')}
                 value={threshold}
@@ -31,7 +31,6 @@ export const AITab = () => {
                 min={0.1} max={0.9} step={0.05} precision={2}
             />
 
-            {/* 2. Grid Snap (Используем UI заголовок) */}
             <div>
                 <SectionTitle
                     label={t('settings.ai.grid_snap')}
@@ -53,7 +52,6 @@ export const AITab = () => {
                 </div>
             </div>
 
-            {/* 3. Style */}
             <div>
                 <SectionTitle
                     label={t('settings.ai.style')}
@@ -71,7 +69,6 @@ export const AITab = () => {
                 </select>
             </div>
 
-            {/* 4. Range */}
             <div className="flex flex-col gap-4">
                 <SectionTitle
                     label={t('settings.ai.range.title')}
@@ -107,27 +104,24 @@ export const AITab = () => {
                     <div className="grid grid-cols-2 gap-3">
                         <div className="flex flex-col gap-1.5">
                             <span className="text-[10px] uppercase text-foreground-muted font-bold">{t('settings.ai.range.start')}</span>
-                            <input
-                                type="text" disabled={!isRangeEnabled}
+                            <NumberInput
+                                disabled={!isRangeEnabled}
                                 value={isRangeEnabled ? startTime : '--'}
-                                onChange={(e) => setStartTime(e.target.value.replace(/[^0-9.]/g, ''))}
-                                className="bg-studio border border-border p-2 text-sm font-mono text-accent outline-none focus:border-accent"
+                                onChange={setStartTime}
                             />
                         </div>
                         <div className="flex flex-col gap-1.5">
                             <span className="text-[10px] uppercase text-foreground-muted font-bold">{t('settings.ai.range.end')}</span>
-                            <input
-                                type="text" disabled={!isRangeEnabled}
+                            <NumberInput
+                                disabled={!isRangeEnabled}
                                 value={isRangeEnabled ? endTime : '--'}
-                                onChange={(e) => setEndTime(e.target.value.replace(/[^0-9.]/g, ''))}
-                                className="bg-studio border border-border p-2 text-sm font-mono text-accent outline-none focus:border-accent"
+                                onChange={setEndTime}
                             />
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Tooltips (те, что не внутри SliderField) */}
             <Tooltip id="grid-tip" place="left" className="z-50 !bg-studio !border !border-border !text-foreground-muted !rounded-none !px-3 !py-2 !text-xs" />
             <Tooltip id="style-tip" place="left" className="z-50 !bg-studio !border !border-border !text-foreground-muted !rounded-none !px-3 !py-2 !text-xs" />
             <Tooltip id="range-tip" place="left" className="z-50 !bg-studio !border !border-border !text-foreground-muted !rounded-none !px-3 !py-2 !text-xs" />
