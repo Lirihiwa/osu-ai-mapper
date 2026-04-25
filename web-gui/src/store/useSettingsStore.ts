@@ -46,10 +46,16 @@ export const useSettingsStore = create<FullStore>()(
                     bpm: state.bpm,
                     offset: state.offset,
                     isMetronomeEnabled: state.isMetronomeEnabled,
+
                     fileId: state.fileId,
                     filename: state.filename,
                     title: state.title,
                     artist: state.artist,
+
+                    onsets: state.onsets,
+                    hitObjects: state.hitObjects,
+
+                    currentTime: Math.floor(state.currentTime / 100) * 100,
                 }),
             }
         )

@@ -8,8 +8,13 @@ export const createFileSlice: StateCreator<FullStore, [["zustand/subscribeWithSe
     isExporting: false,
 
     setFile: (fileId, filename) => set({
-        fileId, filename, isUploading: false, onsets: null,
-        currentTime: 0, isPlaying: false
+        fileId,
+        filename,
+        currentTime: 0,
+        onsets: null,
+        hitObjects: [],
+        isPlaying: false,
+        isUploading: false
     }),
     setIsUploading: (isUploading) => set({ isUploading }),
     setIsExporting: (isExporting) => set({ isExporting }),

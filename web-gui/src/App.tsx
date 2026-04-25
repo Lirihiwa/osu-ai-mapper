@@ -16,7 +16,6 @@ function App() {
     const isAppBusy = useSettingsStore(s => s.isAppBusy);
     useKeyboardShortcuts();
 
-
     return (
         <>
             {isAppBusy && (
