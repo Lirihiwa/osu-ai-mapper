@@ -4,6 +4,8 @@ import { SectionTitle } from '../../ui/SectionTitle';
 import { Tooltip } from 'react-tooltip';
 import {SearchOutlined, CustomerServiceOutlined, LoadingOutlined} from '@ant-design/icons';
 import {mapperApi} from "../../../api/mapperApi.ts";
+import {toast} from "sonner";
+import {NumberInput} from "../../ui/NumberInput.tsx";
 
 export const TimingTab = () => {
     const { t } = useTranslation();
@@ -17,7 +19,7 @@ export const TimingTab = () => {
     } = useSettingsStore();
 
     const handleDetectBPM = async () => {
-        if (!fileId) return alert("Сначала загрузите аудио файл");
+        if (!fileId) return toast.error("Сначала загрузите аудио файл");
 
         setIsAnalyzingBPM(true);
         try {
@@ -26,14 +28,14 @@ export const TimingTab = () => {
             setBPM(detectedBpm);
         } catch (error) {
             console.error(error);
-            alert("Ошибка анализа BPM");
+            toast.error("Ошибка анализа BPM");
         } finally {
             setIsAnalyzingBPM(false);
         }
     };
 
     const handleDetectOffset = async () => {
-        if (!fileId) return alert("Upload file first");
+        if (!fileId) return toast.error("Upload file first");
 
         setIsAnalyzingOffset(true);
         try {
@@ -52,7 +54,7 @@ export const TimingTab = () => {
             setOffset(offsetData.offset.toString());
 
         } catch (error: any) {
-            alert(error.message);
+            toast.error(error.message);
         } finally {
             setIsAnalyzingOffset(false);
         }
@@ -64,10 +66,10 @@ export const TimingTab = () => {
             <div className="flex flex-col gap-4">
                 <SectionTitle label={t('settings.timing.bpm')} tooltipId="bpm-tip" tooltipContent={t('settings.timing.bpm_tip')} />
                 <div className="flex gap-2">
-                    <input
-                        type="text" value={bpm}
-                        onChange={(e) => setBPM(e.target.value.replace(/[^0-9.]/g, ''))}
-                        className="flex-1 bg-studio border border-border p-2 text-sm font-mono text-accent outline-none focus:border-accent"
+                    <NumberInput
+                        value={bpm}
+                        onChange={setBPM}
+                        className="flex-1"
                     />
                     <button
                         onClick={handleDetectBPM}

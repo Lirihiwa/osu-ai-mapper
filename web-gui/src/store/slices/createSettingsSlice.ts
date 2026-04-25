@@ -18,6 +18,7 @@ export const createSettingsSlice: StateCreator<FullStore, [["zustand/subscribeWi
     offset: '0',
     isMetronomeEnabled: false,
 
+
     setActiveTab: (activeTab) => set({ activeTab }),
     setThreshold: (threshold) => set({ threshold, onsets: null }),
     setGridSize: (gridSize) => set({ gridSize }),

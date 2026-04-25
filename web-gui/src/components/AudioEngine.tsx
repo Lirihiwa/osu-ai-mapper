@@ -31,7 +31,8 @@ export const AudioEngine = () => {
 
     useEffect(() => {
         if (fileId && audioRef.current) {
-            audioRef.current.src = `http://localhost:8000/api/audio/${fileId}`;
+            const audioUrl = `${import.meta.env.VITE_API_URL}/api/audio/${fileId}`;
+            audioRef.current.src = audioUrl;
             audioRef.current.load();
         }
     }, [fileId]);

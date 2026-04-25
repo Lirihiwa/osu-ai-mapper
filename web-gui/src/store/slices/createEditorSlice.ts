@@ -10,6 +10,7 @@ export const createEditorSlice: StateCreator<FullStore, [["zustand/subscribeWith
     currentTime: 0,
     duration: 0,
     hitObjects: [],
+    isAppBusy: false,
 
     setIsGenerating: (val) => set({ isGenerating: val }),
     setIsAnalyzingBPM: (val) => set({ isAnalyzingBPM: val }),
@@ -19,4 +20,5 @@ export const createEditorSlice: StateCreator<FullStore, [["zustand/subscribeWith
     setCurrentTime: (currentTime) => set({ currentTime }),
     setDuration: (duration) => set({ duration }),
     setHitObjects: (hitObjects) => set({ hitObjects }),
+    setIsAppBusy: (isAppBusy) => set({ isAppBusy }),
 });

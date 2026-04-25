@@ -1,5 +1,6 @@
 import { mapperApi } from '../api/mapperApi';
 import { useSettingsStore } from '../store/useSettingsStore';
+import { toast } from 'sonner';
 
 export const MapperService = {
     async uploadAudio(file: File) {
@@ -13,8 +14,7 @@ export const MapperService = {
             const rhythmData = await mapperApi.analyzeOnsets(data.file_id, store.threshold);
             store.setOnsets(rhythmData.onsets);
         } catch (error) {
-            console.error("Upload error:", error);
-            alert("Upload failed");
+            toast.error("Upload error");
         } finally {
             store.setIsUploading(false);
         }
@@ -23,7 +23,7 @@ export const MapperService = {
     async generateMap() {
         const store = useSettingsStore.getState();
         if (!store.onsets || store.onsets.length === 0) {
-            alert("Analyze rhythm first");
+            toast.error("Analyze rhythm first");
             return;
         }
 
@@ -50,7 +50,7 @@ export const MapperService = {
             const data = await mapperApi.generateObjects(payload);
             store.setHitObjects(data.hit_objects);
         } catch (error: any) {
-            alert("Error: " + error.message);
+            toast.error("Error");
         } finally {
             store.setIsGenerating(false);
         }
@@ -59,7 +59,7 @@ export const MapperService = {
     async exportToOSZ() {
         const store = useSettingsStore.getState();
         if (!store.fileId || store.hitObjects.length === 0) {
-            alert("Сначала загрузите аудио и сгенерируйте объекты!");
+            toast.message("Сначала загрузите аудио и сгенерируйте объекты!");
             return;
         }
 
@@ -78,7 +78,7 @@ export const MapperService = {
             };
 
             const data = await mapperApi.packageToOSZ(payload);
-            const downloadLink = `http://localhost:8000${data.download_url}`;
+            const downloadLink = `${import.meta.env.VITE_API_URL}${data.download_url}`;
 
             const link = document.createElement('a');
             link.href = downloadLink;
@@ -87,8 +87,8 @@ export const MapperService = {
             link.click();
             link.remove();
         } catch (error) {
-            console.error(error);
-            alert("Ошибка при создании .osz пакеation");
+            toast.error(`Ошибка при создании .osz пакета`);
+            console.error("Ошибка при создании .osz пакета: ", error);
         } finally {
             store.setIsExporting(false);
         }

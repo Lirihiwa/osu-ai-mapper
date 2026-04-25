@@ -1,15 +1,17 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSettingsStore } from '../store/useSettingsStore';
+import {OsuMath} from "../utils/osuMath.ts";
 
-const OSU_WIDTH = 512;
-// const OSU_HEIGHT = 384;
-
-export const useCanvasRenderer = (canvasRef: React.RefObject<HTMLCanvasElement | null>) => {
+export const useCanvasRenderer = (
+    canvasRef: React.RefObject<HTMLCanvasElement | null>,
+    width: number,
+    height: number,
+) => {
     const lastIndexRef = useRef(0);
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        if (!canvas || width === 0) return;
         const ctx = canvas.getContext('2d', { alpha: false });
         if (!ctx) return;
 
@@ -19,17 +21,17 @@ export const useCanvasRenderer = (canvasRef: React.RefObject<HTMLCanvasElement |
             const { hitObjects, currentTime, ar, cs } = useSettingsStore.getState();
 
             ctx.fillStyle = '#050505';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0, 0, width, height);
 
             if (!hitObjects?.length) {
                 rafId = requestAnimationFrame(render);
                 return;
             }
 
-            const scale = canvas.width / OSU_WIDTH;
-            const radius = (54.4 - 4.48 * cs) * scale;
-            const preempt = ar > 5 ? 1200 - 750 * (ar - 5) / 5 : 1200 + 600 * (5 - ar) / 5;
-            const fadeIn = 400;
+            const scale = width / OsuMath.PLAYFIELD_WIDTH;
+            const radius = OsuMath.getRadius(cs) * scale;
+            const preempt = OsuMath.getPreempt(ar);
+            const fadeIn = OsuMath.getFadeIn(ar);
 
             let startIndex = 0;
             for (let i = lastIndexRef.current; i >= 0; i--) {
@@ -84,5 +86,5 @@ export const useCanvasRenderer = (canvasRef: React.RefObject<HTMLCanvasElement |
 
         rafId = requestAnimationFrame(render);
         return () => cancelAnimationFrame(rafId);
-    }, [canvasRef]);
+    }, [canvasRef, width, height]);
 };
