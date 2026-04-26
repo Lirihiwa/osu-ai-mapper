@@ -4,9 +4,10 @@
     },
     "settings": {
         "tabs": {
-            "timing": "Timing",
             "difficulty": "Difficulty",
-            "ai": "AI"
+            "timing": "Timing",
+            "ai": "AI",
+            "info": "Info"
         },
         "timing": {
             "bpm": "BPM (Tempo)",
@@ -47,6 +48,12 @@
                 "unit_ms": "ms",
                 "unit_sec": "sec"
             }
+        },
+        "info": {
+            "title": "Song Title",
+            "artist": "Artist",
+            "title_tip": "The name of the song.",
+            "artist_tip": "The name of the music creator."
         },
         "generate_btn": "Generate Pattern"
     },

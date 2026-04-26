@@ -4,9 +4,10 @@
     },
     "settings": {
         "tabs": {
-            "timing": "Тайминги",
             "difficulty": "Сложность",
-            "ai": "AI"
+            "timing": "Тайминги",
+            "ai": "AI",
+            "info": "Инфо"
         },
         "difficulty": {
             "ar": "Approach Rate (AR)",
@@ -47,6 +48,12 @@
                 "unit_ms": "мс",
                 "unit_sec": "сек"
             }
+        },
+        "info": {
+            "title": "Название песни",
+            "artist": "Исполнитель",
+            "title_tip": "Название музыкальной композиции.",
+            "artist_tip": "Имя или псевдоним автора музыки."
         },
         "generate_btn": "Сгенерировать паттерн"
     },

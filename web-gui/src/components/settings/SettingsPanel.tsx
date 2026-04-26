@@ -1,8 +1,9 @@
-import { useSettingsStore } from '../../store/useSettingsStore';
 import { SettingsTabs } from './SettingsTabs';
 import { AITab } from './tabs/AITab';
 import { DifficultyTab } from './tabs/difficulty/DifficultyTab.tsx';
 import { TimingTab } from './tabs/TimingTab';
+import { InfoTab } from './tabs/InfoTab';
+import { useSettingsStore } from '../../store/useSettingsStore';
 import { useTranslation } from 'react-i18next';
 import { LoadingOutlined } from "@ant-design/icons";
 import { MapperService } from "../../services/MapperService.ts";
@@ -15,6 +16,7 @@ export const SettingsPanel = () => {
         <div className="flex flex-col h-full bg-panel">
             <SettingsTabs />
             <div className="flex-1 p-6 overflow-y-auto">
+                {activeTab === 'info' && <InfoTab />}
                 {activeTab === 'ai' && <AITab />}
                 {activeTab === 'timing' && <TimingTab />}
                 {activeTab === 'difficulty' && <DifficultyTab />}

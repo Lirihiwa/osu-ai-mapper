@@ -4,7 +4,7 @@ import {useSettingsStore} from "../../store/useSettingsStore.ts";
 
 export const SettingsTabs = () => {
     const { t } = useTranslation();
-    const tabs: TabType[] = ['difficulty', 'timing', 'ai'];
+    const tabs: TabType[] = ['info', 'difficulty', 'timing', 'ai'];
 
     const activeTab = useSettingsStore((state) => state.activeTab);
     const setActiveTab = useSettingsStore((state) => state.setActiveTab);
@@ -18,7 +18,7 @@ export const SettingsTabs = () => {
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`
-                            flex-1 py-3 text-xs uppercase tracking-wider font-bold transition-colors
+                            flex-1 py-3 text-[0.7rem] uppercase tracking-wider font-bold transition-colors
                             border-r border-border last:border-r-0
                             ${isActive
                             ? 'bg-panel text-accent border-b-2 border-b-accent'
