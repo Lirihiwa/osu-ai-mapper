@@ -55,8 +55,14 @@ export const HitSoundEngine = () => {
 
         if (timeDiff > 100) {
             const newIndex = hitObjects.findIndex(obj => obj.time >= currentTime);
-            lastPlayedIndexRef.current = newIndex - 1;
-            console.log("Seek detected, syncing index...");
+
+            if (newIndex === -1) {
+                lastPlayedIndexRef.current = hitObjects.length;
+            } else {
+                lastPlayedIndexRef.current = newIndex - 1;
+            }
+
+            // console.log("Seek detected, syncing index...");
         }
 
         lastTimeRef.current = currentTime;
@@ -67,6 +73,9 @@ export const HitSoundEngine = () => {
 
         for (let i = lastPlayedIndexRef.current + 1; i < hitObjects.length; i++) {
             const obj = hitObjects[i];
+
+            if (!obj) continue;
+
             const timeUntilHit = obj.time - currentTime;
 
             if (timeUntilHit <= lookAhead && timeUntilHit > -50) {
