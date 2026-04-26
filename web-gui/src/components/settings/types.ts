@@ -97,7 +97,7 @@ export interface EditorStateSetter {
     setCurrentTime: (val: number) => void;
     setDuration: (val: number) => void;
     setHitObjects: (objects: HitObject[]) => void;
-    setAppBusy: (val: boolean) => void;
+    setIsAppBusy: (val: boolean) => void;
 }
 
 export interface MetadataStateSetter {

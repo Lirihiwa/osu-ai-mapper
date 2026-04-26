@@ -6,6 +6,7 @@ export const MapperService = {
     async uploadAudio(file: File) {
         const store = useSettingsStore.getState();
         store.setIsUploading(true);
+        store.setIsAppBusy(true);
 
         try {
             const data = await mapperApi.uploadAudio(file);
@@ -17,6 +18,7 @@ export const MapperService = {
             toast.error("Upload error");
         } finally {
             store.setIsUploading(false);
+            store.setIsAppBusy(false);
         }
     },
 

@@ -60,5 +60,8 @@
     "toolbar": {
         "create": "Create project",
         "export": "Export map"
+    },
+    "editor": {
+        "processing": "Processing..."
     }
 }
