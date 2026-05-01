@@ -63,5 +63,9 @@
     },
     "editor": {
         "processing": "Processing..."
+    },
+    "timeline": {
+        "rhythm": "Rhythm markers",
+        "no_data": "No data"
     }
 }

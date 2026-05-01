@@ -63,5 +63,9 @@
     },
     "editor": {
         "processing": "Выполняется..."
+    },
+    "timeline": {
+        "rhythm": "Линии ритма",
+        "no_data": "Нет данных"
     }
 }

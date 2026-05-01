@@ -3,6 +3,7 @@ import { useSettingsStore } from '../../store/useSettingsStore';
 import { PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import {useTimelineSync} from "../../hooks/useTimelineSync.ts";
 import {formatTime} from "../../utils/time.ts";
+import {useTranslation} from "react-i18next";
 
 const RhythmMarkers = memo(({ onsets, duration }: { onsets: number[] | null, duration: number }) => {
     if (!onsets || duration === 0) return null;
@@ -25,6 +26,7 @@ const RhythmMarkers = memo(({ onsets, duration }: { onsets: number[] | null, dur
 
 export const Timeline = () => {
     const { onsets, duration, isPlaying, setIsPlaying, setCurrentTime } = useSettingsStore();
+    const {t} = useTranslation();
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +61,7 @@ export const Timeline = () => {
                 </div>
 
                 <div className="text-[10px] uppercase font-bold text-foreground-muted tracking-widest">
-                    {onsets ? `${onsets.length} Rhythm Markers` : 'No data'}
+                    {onsets ? `${t("timeline.rhythm")} (${onsets.length})` : t("timeline.no_data")}
                 </div>
             </div>
 
